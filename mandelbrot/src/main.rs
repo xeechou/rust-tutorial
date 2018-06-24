@@ -154,6 +154,19 @@ fn main() {
     let threads = 8;
     let rows_per_band = bounds.1 / threads + 1;
 
+    //buy the definition of write_image, you see that usually you don't define a
+    // slice, since rust doesn't allow initial value to be undefined anyway.
+    //most likely you will have to write
+    //    you can assign a initalized array like this:
+    //    rust doesn't have uninitialized arrays
+    let mut trash_pixels = [30u8; 200];
+//       then you can actually assign value
+    for i in 0..200 {
+        trash_pixels[i] = 100;
+    }
+//      finally you can create reference to it
+    let a : &[u8] = &trash_pixels;
+    //the way to initialize an array, the first is the value
     let mut pixels = vec![0; bounds.0 * bounds.1];
     {
         let bands :Vec<&mut [u8]> = pixels.chunks_mut(rows_per_band * bounds.0).collect();
